@@ -1,20 +1,28 @@
 var express = require('express');
 var fs = require('fs');
 
+
 var app = express.createServer(express.logger());
 
-var buf = new Buffer ('Test');
 
-fs.readFile('./index.html', function (err, data) {
-  if (err) throw err;
-  buf = buf.toString(data);
-   
-});
+var message = function (file) {
+var FILE_DEFAULT = "index.html";
+file = file || FILE_DEFAULT;
+var buffer = fs.readFileSync(file);
+return (buffer.toString('utf-8'));
+}
+
+
+console.log(message("index.html"));
+
+
+
 
 
 app.get('/', function(request, response) {
-  response.send('buf');
+  response.send(message("index.html"));
 });
+
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
